@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#FFFFFF</color>
+    <color name="colorAccent">#4286f4</color>
+    <color name="lightGrey">#fafafa</color>
+
+
+    <!-- Color Palette-->
+    <color name="iconic_blue">#c12774eb</color>
+    <color name="some_green">#c100b68c</color>
+    <color name="deep_orange">#c1FF5722</color>
+    <color name="semiBlack">#7f939393</color>
+    <color name="scrim">#22000000</color>
+    <color name="colorOrange">#ff5722</color>
+    <color name="colorGreen">#00b68c</color>
+
+</resources>

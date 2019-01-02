@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dialog_rounded_corner">12dp</dimen>
+    <dimen name="dialog_vertical_margin">32dp</dimen>
+    <dimen name="dialog_horizontal_margin">32dp</dimen>
+    <dimen name="dialog_elevation">24dp</dimen>
+    <dimen name="spacing_normal">8dp</dimen>
+    <dimen name="spacing_micro">4dp</dimen>
+
+</resources>

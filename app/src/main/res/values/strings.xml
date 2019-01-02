@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Gallery</string>
+
+    <string name="confirm_delete">Confirm Delete</string>
+    <string name="sub_yes">Yes</string>
+    <string name="ask_confirm_delete">Are you sure you want to delete file %s ?</string>
+    <string name="ask_confirm_delete_simple">Are you sure you want to delete ?</string>
+
+</resources>

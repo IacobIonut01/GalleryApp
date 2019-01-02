@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.dot.gallery">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning"
+        android:fullBackupContent="true">
+        <activity android:name=".activities.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.DetailsActivity"
+            android:theme="@style/DetailsTheme" />
+        <activity
+            android:name=".activities.PhotosActivity"
+            android:theme="@style/TrashTheme"/>
+        <activity
+            android:name=".activities.TrashActivity"
+            android:theme="@style/TrashTheme"/>
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:theme="@style/TrashTheme"/>
+        <activity
+            android:name=".activities.FavouriteActivity"
+            android:theme="@style/TrashTheme"/>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.dot.gallery.fileprovider"
+            android:enabled="true"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
+
+        <provider android:name=".provider.GalleryProvider"
+            android:syncable="false"
+            android:grantUriPermissions="true"
+            android:exported="true"
+            android:permission="com.dot.gallery.permission.GALLERY_PROVIDER"
+            android:authorities="com.dot.gallery.provider" />
+    </application>
+
+</manifest>

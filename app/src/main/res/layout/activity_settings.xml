@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="enterAlways|snap">
+
+            <LinearLayout
+                android:id="@+id/opt_part"
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/album_name_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/go_backs"
+                        android:fontFamily="@font/google_sans"
+                        android:text="Settings"
+                        android:textSize="18sp" />
+
+                    <ImageButton
+                        android:id="@+id/go_backs"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:alpha="0.65"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:rotation="180"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/ic_right" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <RelativeLayout
+                android:id="@+id/storage_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:fontFamily="@font/google_sans"
+                    android:text="Storage Available"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:id="@+id/storage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textView11"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="18dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RelativeLayout
+                            android:id="@+id/internal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <RelativeLayout
+                                android:id="@+id/inl"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <com.timqi.sectorprogressview.ColorfulRingProgressView
+                                    android:id="@+id/internal_progress"
+                                    android:layout_width="128dp"
+                                    android:layout_height="128dp"
+                                    app:bgColor="#f3f3f3"
+                                    app:fgColorEnd="@color/colorGreen"
+                                    app:fgColorStart="@color/colorGreen"
+                                    app:percent="75"
+                                    app:startAngle="0"
+                                    app:strokeWidth="8dp" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:gravity="center_horizontal"
+                                    android:orientation="vertical">
+
+                                    <ImageView
+                                        android:id="@+id/imageView6"
+                                        android:layout_width="48dp"
+                                        android:layout_height="48dp"
+                                        android:tint="@color/colorGreen"
+                                        app:srcCompat="@drawable/ic_device" />
+
+                                    <TextView
+                                        android:id="@+id/textView12"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="2dp"
+                                        android:text="75%" />
+                                </LinearLayout>
+                            </RelativeLayout>
+
+                            <TextView
+                                android:id="@+id/textView14"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/inl"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="12dp"
+                                android:fontFamily="@font/google_sans"
+                                android:text="Internal Storage"
+                                android:textSize="14sp" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/external"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="48dp">
+
+                            <RelativeLayout
+                                android:id="@+id/enl"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <com.timqi.sectorprogressview.ColorfulRingProgressView
+                                    android:id="@+id/external_progress"
+                                    android:layout_width="128dp"
+                                    android:layout_height="128dp"
+                                    app:bgColor="#f3f3f3"
+                                    app:fgColorEnd="@color/colorOrange"
+                                    app:fgColorStart="@color/colorOrange"
+                                    app:percent="67"
+                                    app:startAngle="0"
+                                    app:strokeWidth="8dp" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:gravity="center_horizontal"
+                                    android:orientation="vertical">
+
+                                    <ImageView
+                                        android:id="@+id/imageView7"
+                                        android:layout_width="48dp"
+                                        android:layout_height="48dp"
+                                        android:tint="@color/colorOrange"
+                                        app:srcCompat="@drawable/ic_storage" />
+
+                                    <TextView
+                                        android:id="@+id/textView13"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="2dp"
+                                        android:text="67%" />
+                                </LinearLayout>
+                            </RelativeLayout>
+
+                            <TextView
+                                android:id="@+id/textView15"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/enl"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="12dp"
+                                android:fontFamily="@font/google_sans"
+                                android:text="External Storage"
+                                android:textSize="14sp" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="@font/google_sans"
+                android:text="Trash Bin"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/rounded_outline_bg"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView20"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/google_sans"
+                        android:text="Don't store items in trash bin"
+                        android:textSize="16sp" />
+
+                    <Switch
+                        android:id="@+id/switch2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAllCaps="false" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="@font/google_sans"
+                android:text="Gallery Cache"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/rounded_outline_bg"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView22"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/google_sans"
+                            android:text="Amount of Cache"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/textView23"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/google_sans"
+                            android:text="Shows amount of cache stored in internal storage to load faster images"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/textView24"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="12dp"
+                        android:text="99.8 MB"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

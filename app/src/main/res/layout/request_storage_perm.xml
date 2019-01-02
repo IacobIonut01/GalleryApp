@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/grant_sdcard_c"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/semiBlack"
+        app:strokeWidth="1dp">
+
+        <RelativeLayout
+            android:id="@+id/grant_sdcard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/semi_transparent_circle"
+                android:backgroundTint="@color/iconic_blue"
+                android:padding="10dp"
+                android:tint="@color/colorAccent"
+                app:srcCompat="@drawable/ic_storage" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/imageView3"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="18dp"
+                android:layout_toEndOf="@+id/imageView3"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/google_sans"
+                    android:text="Allow SDCard Access"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:fontFamily="@font/google_sans"
+                    android:text="Permission is required to access photos from external storage"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+        </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
+</FrameLayout>

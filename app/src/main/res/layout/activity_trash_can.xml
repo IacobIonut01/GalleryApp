@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="enterAlways|snap">
+
+            <LinearLayout
+                android:id="@+id/opt_part"
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/album_name_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/go_backs"
+                        android:fontFamily="@font/google_sans"
+                        android:text="Trash Bin"
+                        android:textSize="18sp" />
+
+                    <ImageButton
+                        android:id="@+id/go_backs"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="8dp"
+                        android:alpha="0.65"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:rotation="180"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/ic_right" />
+
+                    <ImageButton
+                        android:id="@+id/refresh"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="12dp"
+                        android:alpha="0.65"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/ic_settings" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="156dp"
+            android:layout_height="156dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="32dp"
+            android:adjustViewBounds="true"
+            app:srcCompat="@drawable/ic_cleantrash" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/google_sans"
+            android:text="No items"
+            android:textAlignment="center"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/google_sans"
+            android:text="There's no item found in trash bin"
+            android:textAlignment="center"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/google_sans"
+            android:text="All photos are available for 30 days till permanent deletion"
+            android:textAlignment="center"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

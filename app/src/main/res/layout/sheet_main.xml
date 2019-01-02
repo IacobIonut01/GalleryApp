@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="32dp"
+        android:layout_height="8dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="4dp"
+        android:tint="@color/semiBlack"
+        app:srcCompat="@drawable/sheet_pin" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="18dp"
+        android:fontFamily="@font/google_sans_bold"
+        android:text="Options"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="22sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/open_fv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/outline_bg"
+            android:backgroundTint="@color/some_green">
+
+
+            <ImageView
+                android:id="@+id/imageView112"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="12dp"
+                android:padding="7dp"
+                android:tint="@android:color/white"
+                app:srcCompat="@drawable/ic_star" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageView112"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="12dp"
+                android:layout_toEndOf="@+id/imageView112"
+                android:fontFamily="@font/google_sans"
+                android:text="Favourites"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/open_ts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/outline_bg"
+            android:backgroundTint="@color/deep_orange">
+
+
+            <ImageView
+                android:id="@+id/imageView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="12dp"
+                android:padding="7dp"
+                android:tint="@android:color/white"
+                app:srcCompat="@drawable/ic_delete" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageView11"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="12dp"
+                android:layout_toEndOf="@+id/imageView11"
+                android:fontFamily="@font/google_sans"
+                android:text="Trash"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

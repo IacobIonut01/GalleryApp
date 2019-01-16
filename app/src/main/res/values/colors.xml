@@ -15,4 +15,7 @@
     <color name="colorOrange">#ff5722</color>
     <color name="colorGreen">#00b68c</color>
 
+    <color name="chip_active">#e9fcfcfc</color>
+    <color name="chip_inctive">#e9464646</color>
+
 </resources>

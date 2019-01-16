@@ -12,24 +12,16 @@ public class ZoomOutTransformation implements ViewPager.PageTransformer {
     @Override
     public void transformPage(View page, float position) {
 
-        if (position <-1){  // [-Infinity,-1)
-            // This page is way off-screen to the left.
+        if (position <-1) {
             page.setAlpha(0);
-
         }
-        else if (position <=1){ // [-1,1]
-
+        else if (position <=1) {
             page.setScaleX(Math.max(MIN_SCALE,1-Math.abs(position)));
             page.setScaleY(Math.max(MIN_SCALE,1-Math.abs(position)));
             page.setAlpha(Math.max(MIN_ALPHA,1-Math.abs(position)));
-
         }
-        else {  // (1,+Infinity]
-            // This page is way off-screen to the right.
+        else {
             page.setAlpha(0);
-
         }
-
-
     }
 }

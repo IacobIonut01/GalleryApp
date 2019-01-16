@@ -19,6 +19,12 @@
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
     </style>
 
+    <style name="CameraTheme" parent="DetailsTheme">
+        <item name="android:navigationBarColor">@android:color/black</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
     <style name="RoundedDialog">
         <item name="android:background">@drawable/dialog_bg</item>
         <item name="android:elevation">@dimen/dialog_elevation</item>
@@ -50,6 +56,23 @@
         <item name="android:navigationBarColor">@android:color/white</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="ChipTextView" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="ActiveChip" parent="Base.Widget.MaterialComponents.Chip">
+        <item name="chipBackgroundColor">@color/chip_active</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="closeIconVisible">false</item>
+    </style>
+
+    <style name="InctiveChip" parent="Base.Widget.MaterialComponents.Chip">
+        <item name="chipBackgroundColor">@color/chip_inctive</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="closeIconVisible">false</item>
     </style>
 
 </resources>

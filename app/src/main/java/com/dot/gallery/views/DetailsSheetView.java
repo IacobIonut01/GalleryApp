@@ -75,7 +75,7 @@ public class DetailsSheetView extends LinearLayout {
         name = view.findViewById(R.id.img_p_name);
         behavior = BottomSheetBehavior.from(sheet);
         behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        behavior.setPeekHeight(dp(30));
+        behavior.setPeekHeight(dp(80));
         frg_view.setScroll(true);
         frg_view.setPageTransformer(false, new ZoomOutTransformation());
         behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {

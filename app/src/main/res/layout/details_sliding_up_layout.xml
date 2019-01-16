@@ -31,7 +31,7 @@
             android:id="@+id/imageView2"
             android:layout_width="match_parent"
             android:layout_height="6dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="64dp"
             android:layout_marginBottom="12dp"
             android:tint="#878787"
             app:srcCompat="@drawable/sheet_pin" />
@@ -71,6 +71,18 @@
                     android:orientation="horizontal"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp">
+
+                    <ImageButton
+                        android:id="@+id/info_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="12dp"
+                        android:layout_weight="1"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:tint="@android:color/white"
+                        app:srcCompat="@drawable/ic_info" />
 
                     <ImageButton
                         android:id="@+id/delete_file"

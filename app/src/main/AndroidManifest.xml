@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
 
     <application
@@ -38,6 +39,9 @@
         <activity
             android:name=".activities.FavouriteActivity"
             android:theme="@style/TrashTheme"/>
+        <activity
+            android:name=".activities.CameraActivity"
+            android:theme="@style/CameraTheme"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

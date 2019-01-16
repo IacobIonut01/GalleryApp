@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -31,7 +32,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.camerakit.CameraKitView;
 import com.dot.gallery.R;
+import com.dot.gallery.activities.CameraActivity;
 import com.dot.gallery.activities.FavouriteActivity;
 import com.dot.gallery.activities.SettingsActivity;
 import com.dot.gallery.activities.TrashActivity;
@@ -44,6 +47,7 @@ import com.dot.gallery.model.AlbumCard;
 import com.dot.gallery.utils.GridSpacingItemDecoration;
 import com.dot.gallery.utils.VerticalSpaceItemDecoration;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -70,6 +74,7 @@ public class HomeFragment extends Fragment {
     private SharedPreferences pref;
     private LinearLayout no_media;
     private TextView title_albums;
+    FavouriteAdapter Favadapter;
 
     @Override
     public void onResume() {
@@ -133,20 +138,22 @@ public class HomeFragment extends Fragment {
         SharedPreferences prefs = getActivity().getSharedPreferences("favourite_images", MODE_PRIVATE);
         String httpParamJSONList = prefs.getString("favourite_images", "");
         selectedList = new Gson().fromJson(httpParamJSONList, new TypeToken<List<FavouriteCard>>() {}.getType());
-        if (selectedList != null) {
-            favs.addAll(selectedList);
-        }
         if (selectedList == null) {
             favRecycler.setVisibility(View.GONE);
             f.setVisibility(View.GONE);
         }
         else {
+            favs.addAll(selectedList);
             favRecycler.setVisibility(View.VISIBLE);
             f.setVisibility(View.VISIBLE);
-            FavouriteAdapter adapter = new FavouriteAdapter(getActivity(), favs);
-            favRecycler.setAdapter(adapter);
+            Favadapter = new FavouriteAdapter(getActivity(), favs);
+            favRecycler.setAdapter(Favadapter);
             favRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         }
+    }
+
+    public FavouriteAdapter getFavAdapter() {
+        return Favadapter;
     }
 
     public void loadSearchEngine(View view) {
@@ -159,6 +166,8 @@ public class HomeFragment extends Fragment {
             BottomSheet bt = new BottomSheet();
             bt.show(getActivity().getSupportFragmentManager(), "no");
         });
+        FloatingActionButton fab = view.findViewById(R.id.fab);
+        fab.setOnClickListener(v -> startActivity(new Intent(getActivity(), CameraActivity.class)));
     }
 
     @Override
@@ -313,6 +322,11 @@ public class HomeFragment extends Fragment {
             }
         }
         return true;
+    }
+
+    private String getAlbumPath(String fullPath) {
+        String rtemp = fullPath;
+        return rtemp.replace(rtemp.substring(rtemp.lastIndexOf("/")), "");
     }
 
     private String getCount(String album_name)

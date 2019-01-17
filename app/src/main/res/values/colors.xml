@@ -5,6 +5,9 @@
     <color name="colorAccent">#4286f4</color>
     <color name="lightGrey">#fafafa</color>
 
+    <color name="colorPrimaryD">#212121</color>
+    <color name="colorPrimaryDDark">#212121</color>
+
 
     <!-- Color Palette-->
     <color name="iconic_blue">#c12774eb</color>

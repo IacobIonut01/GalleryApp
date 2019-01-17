@@ -4,20 +4,27 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:navigationBarColor">@color/colorAccent</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
         <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="DarkTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimaryD</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:navigationBarColor">@color/colorPrimaryD</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <style name="DetailsTheme" parent="AppTheme">
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
-    <style name="TrashTheme" parent="AppTheme">
-        <item name="android:navigationBarColor">@color/colorPrimary</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
-    </style>
 
     <style name="CameraTheme" parent="DetailsTheme">
         <item name="android:navigationBarColor">@android:color/black</item>
@@ -58,6 +65,18 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="BaseBottomSheetDialogD" parent="@style/Theme.Design.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+    </style>
+
+    <style name="BottomSheetDialogThemeD" parent="BaseBottomSheetDialogD">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/colorPrimaryD</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
     <style name="ChipTextView" parent="TextAppearance.AppCompat.Body2">
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:textSize">14sp</item>
@@ -73,6 +92,18 @@
         <item name="chipBackgroundColor">@color/chip_inctive</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="closeIconVisible">false</item>
+    </style>
+
+    <style name="TsbItem" parent="Widget.MaterialComponents.TabLayout">
+        <item name="tabPaddingTop">2dp</item>
+        <item name="tabPaddingBottom">2dp</item>
+        <item name="tabPaddingStart">12dp</item>
+        <item name="tabPaddingEnd">12dp</item>
+    </style>
+
+    <style name="TsbText" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
 </resources>

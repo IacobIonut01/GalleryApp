@@ -27,7 +27,6 @@ public class DetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         List<String> path = intent.getStringArrayListExtra("paths");
         int pos = intent.getIntExtra("pos", 0);
-        sheetView.setNames(intent.getStringArrayListExtra("names"));
         sheetView.setImage(path);
         sheetView.setPosition(pos);
         ImageButton go_back = findViewById(R.id.go_backs);

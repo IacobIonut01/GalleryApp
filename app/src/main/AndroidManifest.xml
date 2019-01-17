@@ -28,17 +28,11 @@
             android:name=".activities.DetailsActivity"
             android:theme="@style/DetailsTheme" />
         <activity
-            android:name=".activities.PhotosActivity"
-            android:theme="@style/TrashTheme"/>
+            android:name=".activities.PhotosActivity"/>
         <activity
-            android:name=".activities.TrashActivity"
-            android:theme="@style/TrashTheme"/>
+            android:name=".activities.TrashActivity"/>
         <activity
-            android:name=".activities.SettingsActivity"
-            android:theme="@style/TrashTheme"/>
-        <activity
-            android:name=".activities.FavouriteActivity"
-            android:theme="@style/TrashTheme"/>
+            android:name=".activities.SettingsActivity"/>
         <activity
             android:name=".activities.CameraActivity"
             android:theme="@style/CameraTheme"/>

@@ -1,6 +1,7 @@
 package com.dot.gallery.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.MergeCursor;
 import android.net.Uri;
@@ -43,6 +44,15 @@ public class PhotosActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences prefs = getSharedPreferences("app_theme_style", MODE_PRIVATE);
+        switch (prefs.getInt("style", 0)) {
+            case 0:
+                setTheme(R.style.AppTheme);
+                break;
+            case 1:
+                setTheme(R.style.DarkTheme);
+                break;
+        }
         setContentView(R.layout.activity_album);
         Intent intent = getIntent();
         album_track = intent.getStringExtra("album");

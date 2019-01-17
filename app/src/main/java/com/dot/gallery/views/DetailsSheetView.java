@@ -50,7 +50,7 @@ public class DetailsSheetView extends LinearLayout {
     // Options
     ImageButton share, delete;
     TextView name;
-    List<String> names = new ArrayList<>();
+    List<String> paths = new ArrayList<>();
 
 
     public DetailsSheetView(Context context) {
@@ -125,25 +125,6 @@ public class DetailsSheetView extends LinearLayout {
             negative.setOnClickListener(v3 -> dialog.cancel());
             dialog.show();
         });
-        if (names.size() > 0) {
-            name.setText(names.get(frg_view.getCurrentItem()));
-            frg_view.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                }
-
-                @Override
-                public void onPageSelected(int position) {
-                    name.setText(names.get(position));
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-
-                }
-            });
-        }
     }
 
     public void shareImage(String image) {
@@ -154,12 +135,8 @@ public class DetailsSheetView extends LinearLayout {
     }
 
     public void setImage(List<String> path) {
-        adapter.setPaths(path);
+        this.paths = path;
         frg_view.setAdapter(adapter);
-    }
-
-    public void setNames(List<String> names) {
-        this.names = names;
     }
 
     public void setPosition(int pos) {
@@ -175,12 +152,6 @@ public class DetailsSheetView extends LinearLayout {
     }
 
     class TouchImageAdapter extends PagerAdapter {
-
-        List<String> paths;
-
-        void setPaths(List<String> paths) {
-            this.paths = paths;
-        }
 
         String getPathAt(int pos) {
             return paths.get(pos);
@@ -199,7 +170,7 @@ public class DetailsSheetView extends LinearLayout {
         @Override
         public View instantiateItem(@NonNull ViewGroup container, int position) {
             ImageView img = new ImageView(container.getContext());
-            Glide.with(img)
+            Glide.with(container.getContext())
                     .load(new File(paths.get(position)))
                     .into(img);
             PagerMatrixTouchHandler matrixTouchHandler = new PagerMatrixTouchHandler(img.getContext());

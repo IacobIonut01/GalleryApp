@@ -5,5 +5,5 @@
         android:topLeftRadius="18dp"
         android:topRightRadius="18dp" />
     <padding android:top="8dp" />
-    <solid android:color="@color/colorPrimary" />
+    <solid android:color="?attr/colorPrimary" />
 </shape>

@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dot.gallery.R;
-import com.dot.gallery.activities.FavouriteActivity;
+import com.dot.gallery.activities.MainActivity;
 import com.dot.gallery.model.FavouriteCard;
 import com.dot.gallery.utils.RoundedSheetFragment;
 import com.google.android.material.button.MaterialButton;
@@ -16,9 +16,9 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -26,28 +26,21 @@ import static android.content.Context.MODE_PRIVATE;
 public class FavDeleteSheet extends RoundedSheetFragment {
 
     List<FavouriteCard> paths = new ArrayList<>();
-    FavouriteCard fav;
+    int pos;
     MaterialButton delete;
-    private AppCompatActivity mActivity;
-    private FragmentActivity fActivity;
+    private FragmentActivity mActivity;
     private SharedPreferences shared;
 
     @Override
     public void dismiss() {
-        if (mActivity != null) {
-            FavouriteActivity activity = (FavouriteActivity) mActivity;
-            activity.loadImages();
-        } else {
-            HomeFragment frg = (HomeFragment) fActivity.getSupportFragmentManager().findFragmentByTag("main");
-            frg.loadImages();
-            frg.getFavAdapter().notifyDataSetChanged();
-        }
+        FavouriteFragment activity = (FavouriteFragment) mActivity.getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.fragment_pager + ":" + 1);
+        activity.loadImages();
         super.dismiss();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle bundle) {
-        View view =  inflater.inflate(R.layout.sheet_remove_fav, container, false);
+        View view = inflater.inflate(R.layout.sheet_remove_fav, container, false);
         delete = view.findViewById(R.id.delete);
         shared = getActivity().getSharedPreferences("favourite_images", MODE_PRIVATE);
         SharedPreferences prefs = getActivity().getSharedPreferences("favourite_images", MODE_PRIVATE);
@@ -59,27 +52,18 @@ public class FavDeleteSheet extends RoundedSheetFragment {
 
     private void initSheet() {
         delete.setOnClickListener(v -> {
-            if (mActivity != null) {
-                paths.remove(0);
-                paths.remove(fav);
-            } else {
-                paths.remove(fav);
-            }
+            paths.remove(pos-1);
             updateList();
             dismiss();
         });
     }
 
-    public void setFavouriteCard(FavouriteCard fav) {
-        this.fav = fav;
+    public void setPosition(int pos) {
+        this.pos = pos;
     }
 
-    public void setmActivity(AppCompatActivity mActivity) {
+    public void setmActivity(FragmentActivity mActivity) {
         this.mActivity = mActivity;
-    }
-
-    public void setfActivity(FragmentActivity fActivity) {
-        this.fActivity = fActivity;
     }
 
     private void updateList() {

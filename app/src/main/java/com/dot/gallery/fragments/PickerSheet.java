@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.dot.gallery.R;
-import com.dot.gallery.activities.FavouriteActivity;
 import com.dot.gallery.adapters.PickerAdapter;
 import com.dot.gallery.model.FavouriteCard;
 import com.dot.gallery.model.PickerCard;
@@ -45,7 +44,7 @@ public class PickerSheet extends RoundedSheetFragment {
     @Override
     public void dismiss() {
         super.dismiss();
-        FavouriteActivity activity = (FavouriteActivity) getActivity();
+        FavouriteFragment activity = (FavouriteFragment) getActivity().getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.fragment_pager + ":" + 1);
         activity.loadImages();
     }
 

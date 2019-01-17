@@ -1,6 +1,7 @@
 package com.dot.gallery.adapters;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,19 +28,13 @@ import androidx.recyclerview.widget.RecyclerView;
 public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.ViewHolder> {
 
     private List<FavouriteCard> mList;
-    private AppCompatActivity mActivity;
     private FragmentActivity fActivity;
 
-    public FavouriteAdapter(AppCompatActivity activity, List<FavouriteCard> mList) {
-        this.mList = mList;
-        this.mActivity = activity;
-    }
 
     public FavouriteAdapter(FragmentActivity activity, List<FavouriteCard> mList) {
         this.mList = mList;
         this.fActivity = activity;
     }
-
 
     @NonNull
     @Override
@@ -60,34 +54,22 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
                     .load(new File(app.getPath()))
                     .into(holder.img);
             holder.cardView.setOnClickListener(v -> {
-                Intent intent;
-                if (mActivity != null)
-                    intent = new Intent(mActivity, DetailsActivity.class);
-                else
-                    intent = new Intent(fActivity, DetailsActivity.class);
+                Intent intent = new Intent(fActivity, DetailsActivity.class);
                 List<String> paths = new ArrayList<>();
-                for (int i = 0; i < mList.size(); i++) {
+                for (int i = 1; i < mList.size(); i++) {
                     paths.add(mList.get(i).getPath());
                 }
                 intent.setAction(Intent.ACTION_SEND_MULTIPLE);
                 intent.putStringArrayListExtra("paths", (ArrayList<String>) paths);
-                intent.putExtra("pos", position);
-                if (mActivity != null)
-                    mActivity.startActivity(intent);
-                else
-                    fActivity.startActivity(intent);
+                intent.putExtra("pos", position-1);
+                fActivity.startActivity(intent);
             });
             holder.cardView.setOnLongClickListener(v -> {
                 FavDeleteSheet sheet = new FavDeleteSheet();
-                if (mActivity != null)
-                    sheet.setmActivity(mActivity);
-                else
-                    sheet.setfActivity(fActivity);
-                sheet.setFavouriteCard(app);
-                if (mActivity != null)
-                    sheet.show(mActivity.getSupportFragmentManager(), "favdel");
-                else
-                    sheet.show(fActivity.getSupportFragmentManager(), "favdel");
+                Log.d("Debug", String.valueOf(position));
+                sheet.setPosition(position);
+                sheet.setmActivity(fActivity);
+                sheet.show(fActivity.getSupportFragmentManager(), "favdel");
                 return false;
             });
         } else {
@@ -95,10 +77,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
             holder.cardView.setVisibility(View.GONE);
             holder.add_items.setOnClickListener(v -> {
                 PickerSheet sheet = new PickerSheet();
-                if (fActivity != null)
-                    sheet.show(fActivity.getSupportFragmentManager(),"picker");
-                else
-                    sheet.show(mActivity.getSupportFragmentManager(), "picker");
+                sheet.show(fActivity.getSupportFragmentManager(),"picker");
             });
         }
     }
@@ -122,6 +101,5 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
             img = view.findViewById(R.id.img);
         }
     }
-
 
 }

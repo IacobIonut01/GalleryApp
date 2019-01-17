@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:orientation="vertical">
 
     <com.camerakit.CameraKitView
         android:id="@+id/camera"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/base_control"
         android:adjustViewBounds="true"
         android:keepScreenOn="true"
         app:camera_facing="back"
@@ -16,4 +18,10 @@
         app:camera_focus="continuous"
         app:camera_permissions="camera" />
 
-</LinearLayout>
+    <include
+        layout="@layout/camera_controls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

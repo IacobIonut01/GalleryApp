@@ -1,17 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/base_control"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@android:color/black"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".activities.CameraActivity">
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabSelector"
+        style="@style/TsbItem"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/black"
+        app:tabBackground="@drawable/ic_tab_bg"
+        app:tabGravity="center"
+        app:tabIndicatorFullWidth="false"
+        app:tabIndicatorHeight="0dp"
+        app:tabMaxWidth="72dp"
+        app:tabMinWidth="72dp"
+        app:tabSelectedTextColor="@android:color/black"
+        app:tabTextAppearance="@style/TsbText"
+        app:tabTextColor="@android:color/white">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Camera" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Video" />
+    </com.google.android.material.tabs.TabLayout>
 
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
-        android:scrollbars="none">
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:scrollbars="none"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -40,5 +72,33 @@
                 android:textAppearance="@style/ChipTextView" />
         </LinearLayout>
     </HorizontalScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="26dp">
+
+        <ImageButton
+            android:id="@+id/imageButton4"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginStart="32dp"
+            android:alpha="0.7"
+            android:background="?attr/selectableItemBackground"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_change_cam" />
+
+        <ImageButton
+            android:id="@+id/imageButton5"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/semi_transparent_circle"
+            android:padding="6dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_circle" />
+    </RelativeLayout>
 
 </LinearLayout>

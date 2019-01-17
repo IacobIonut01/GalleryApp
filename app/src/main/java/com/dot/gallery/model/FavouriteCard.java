@@ -3,7 +3,7 @@ package com.dot.gallery.model;
 public class FavouriteCard {
 
     private String path, timestamp;
-    private boolean isFirst;
+    private boolean isFirst, isSelected;
 
     public FavouriteCard() {
 
@@ -16,6 +16,14 @@ public class FavouriteCard {
 
     public FavouriteCard(boolean isFirst) {
         this.isFirst = isFirst;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 
     public boolean isFirst() {

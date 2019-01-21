@@ -1,6 +1,7 @@
 package com.dot.gallery.adapters;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.dot.gallery.R;
@@ -46,7 +48,8 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         AlbumCard app = mList.get(position);
         Glide.with(holder.img)
-                .load(new File(app.getPath()))
+                .load(app.getPath())
+                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.AUTOMATIC))
                 .into(holder.img);
         holder.name.setText(app.getName());
         holder.count.setText(app.getCount());

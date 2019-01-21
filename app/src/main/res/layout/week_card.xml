@@ -24,13 +24,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/testwp" />
+                android:scaleType="centerCrop" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
-                android:background="?attr/colorButtonNormal">
+                android:background="?exposedBackgroundColor">
 
                 <TextView
                     android:id="@+id/name"

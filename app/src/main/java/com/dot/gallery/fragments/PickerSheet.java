@@ -63,6 +63,7 @@ public class PickerSheet extends RoundedSheetFragment {
             updateList();
             dismiss();
         });
+
         return view;
     }
 
@@ -128,7 +129,7 @@ public class PickerSheet extends RoundedSheetFragment {
         @Override
         protected void onPostExecute(String xml) {
             prg.setVisibility(View.GONE);
-            PickerAdapter adapter = new PickerAdapter(getActivity(), phts);
+            PickerAdapter adapter = new PickerAdapter(phts);
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         }

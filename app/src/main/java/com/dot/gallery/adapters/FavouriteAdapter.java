@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.dot.gallery.R;
 import com.dot.gallery.activities.DetailsActivity;
 import com.dot.gallery.fragments.FavDeleteSheet;
@@ -51,7 +53,8 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
             holder.adds.setVisibility(View.GONE);
             holder.cardView.setVisibility(View.VISIBLE);
             Glide.with(holder.img)
-                    .load(new File(app.getPath()))
+                    .load(app.getPath())
+                    .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.AUTOMATIC))
                     .into(holder.img);
             holder.cardView.setOnClickListener(v -> {
                 Intent intent = new Intent(fActivity, DetailsActivity.class);

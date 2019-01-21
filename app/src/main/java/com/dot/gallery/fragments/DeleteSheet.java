@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class DeleteSheet extends RoundedSheetFragment {
 
     List<String> paths = new ArrayList<>();
+    List<String> thumbs = new ArrayList<>();
     MaterialButton delete;
     TextView counter;
     ImageView img;
@@ -56,9 +57,15 @@ public class DeleteSheet extends RoundedSheetFragment {
             counter.setText("9+");
         else
             counter.setText("");
-        Glide.with(view)
-                .load(new File(paths.get(0)))
-                .into(img);
+        if (thumbs.size() == 0) {
+            Glide.with(view)
+                    .load(new File(paths.get(0)))
+                    .into(img);
+        } else {
+            Glide.with(view)
+                    .load(new File(thumbs.get(0)))
+                    .into(img);
+        }
         delete.setOnClickListener(v -> {
             if (paths.size() == 1) {
                 File image = new File(paths.get(0));
@@ -80,6 +87,10 @@ public class DeleteSheet extends RoundedSheetFragment {
                 dismiss();
             }
         });
+    }
+
+    public void setThumbs(List<String> thumbs) {
+        this.thumbs = thumbs;
     }
 
     public void setPaths(List<String> paths) {

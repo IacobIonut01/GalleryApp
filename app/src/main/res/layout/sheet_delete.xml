@@ -15,15 +15,16 @@
         android:tint="@color/semiBlack"
         app:srcCompat="@drawable/sheet_pin" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:orientation="horizontal">
+        android:layout_marginTop="12dp">
 
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="18dp"
-            android:layout_height="56dp"
+            android:id="@+id/banner"
+            android:layout_width="46dp"
+            android:layout_height="64dp"
+            android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="12dp"
             android:layout_weight="1"
@@ -67,6 +68,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/delete"
+            android:layout_toEndOf="@+id/banner"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -106,13 +109,13 @@
             android:textAppearance="@style/TextAppearance.AppCompat"
             app:cornerRadius="24dp" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
-        app:cardBackgroundColor="#efefef"
+        app:cardBackgroundColor="?exposedBackgroundColor"
         app:cardCornerRadius="12dp"
         app:cardElevation="0dp">
 

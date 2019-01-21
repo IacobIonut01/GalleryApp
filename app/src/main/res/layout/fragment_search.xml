@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="14dp"
+        android:background="?exposedBackgroundColor"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="3dp">
+
+        <RelativeLayout
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:clickable="true"
+            android:clipChildren="true">
+
+            <TextView
+                android:id="@+id/search_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="52dp"
+                android:alpha="0.8"
+                android:fontFamily="@font/google_sans"
+                android:text="Search Images &amp; Videos"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="16sp" />
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:orientation="vertical"
+                android:paddingStart="6dp"
+                app:queryBackground="@android:color/transparent"
+                app:queryHint="Search places"
+                app:searchHintIcon="@null" />
+        </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.chip.ChipGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:alpha="0.8"
+                    android:text="Only Videos"
+                    android:textAppearance="@style/ChipTextView"
+                    app:chipBackgroundColor="?exposedBackgroundColor"
+                    app:chipIcon="@drawable/no_media"
+                    app:chipIconSize="18dp"
+                    app:chipIconTint="?android:attr/textColorPrimary"
+                    app:chipStartPadding="12dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:alpha="0.8"
+                    android:text="Only Images"
+                    android:textAppearance="@style/ChipTextView"
+                    app:chipBackgroundColor="?exposedBackgroundColor"
+                    app:chipIcon="@drawable/ic_photo_camera"
+                    app:chipIconSize="18dp"
+                    app:chipIconTint="?android:attr/textColorPrimary"
+                    app:chipStartPadding="12dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:alpha="0.8"
+                    android:text="Deleted Media"
+                    android:textAppearance="@style/ChipTextView"
+                    app:chipBackgroundColor="?exposedBackgroundColor"
+                    app:chipIcon="@drawable/ic_delete"
+                    app:chipIconSize="18dp"
+                    app:chipIconTint="?android:attr/textColorPrimary"
+                    app:chipStartPadding="12dp" />
+            </com.google.android.material.chip.ChipGroup>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+</LinearLayout>

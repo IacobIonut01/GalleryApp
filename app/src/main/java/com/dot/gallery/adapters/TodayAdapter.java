@@ -2,7 +2,9 @@ package com.dot.gallery.adapters;
 
 import android.content.Intent;
 import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +12,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.dot.gallery.R;
 import com.dot.gallery.activities.DetailsActivity;
+import com.dot.gallery.activities.VideoActivity;
 import com.dot.gallery.fragments.DeleteSheet;
+import com.dot.gallery.model.MediaCard;
 import com.dot.gallery.model.TodayCard;
+import com.dot.gallery.model.VideoCard;
+import com.masterwok.simplevlcplayer.activities.MediaPlayerActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,18 +35,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> {
 
-    private List<TodayCard> mList;
+    private List<MediaCard> mList;
     private AppCompatActivity mActivity;
-    private FragmentActivity mFActivity;
+    private FragmentActivity fActivity;
 
-    public TodayAdapter(AppCompatActivity activity, List<TodayCard> mList) {
+    public TodayAdapter(AppCompatActivity activity, List<MediaCard> mList) {
         this.mList = mList;
         this.mActivity = activity;
     }
 
-    public TodayAdapter(FragmentActivity activity, List<TodayCard> mList) {
+    public TodayAdapter(FragmentActivity activity, List<MediaCard> mList) {
         this.mList = mList;
-        this.mFActivity = activity;
+        this.fActivity = activity;
     }
 
     @NonNull
@@ -51,58 +59,116 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        TodayCard app = mList.get(position);
-        Glide.with(holder.img)
-                .load(new File(app.getPath()))
-                .into(holder.img);
-        holder.name.setText(app.getName());
+        MediaCard app = mList.get(position);
         if (mActivity != null) {
-            holder.cardView.setOnClickListener(v -> {
-                Intent intent = new Intent(mActivity, DetailsActivity.class);
-                List<String> paths = new ArrayList<>();
-                for (int i = 0; i < mList.size(); i++) {
-                    paths.add(mList.get(i).getPath());
-                }
-                intent.setAction(Intent.ACTION_SEND_MULTIPLE);
-                intent.putStringArrayListExtra("paths", (ArrayList<String>) paths);
-                intent.putExtra("pos", position);
-                mActivity.startActivity(intent);
-            });
-            holder.cardView.setOnLongClickListener(v -> {
-                DeleteSheet bt = new DeleteSheet();
-                List<String> paths = new ArrayList<>();
-                paths.add(app.getPath());
-                bt.setPaths(paths);
-                bt.show(mActivity.getSupportFragmentManager(), "no");
-                return false;
-            });
-        } else if (mFActivity != null) {
-            holder.cardView.setOnClickListener(v -> {
-                Intent intent = new Intent(mFActivity, DetailsActivity.class);
-                List<String> paths = new ArrayList<>();
-                for (int i = 0; i < mList.size(); i++) {
-                    paths.add(mList.get(i).getPath());
-                }
-                intent.setAction(Intent.ACTION_SEND_MULTIPLE);
-                intent.putStringArrayListExtra("paths", (ArrayList<String>) paths);
-                intent.putExtra("pos", position);
-                mFActivity.startActivity(intent);
-            });
-            holder.cardView.setOnLongClickListener(v -> {
-                DeleteSheet bt = new DeleteSheet();
-                List<String> paths = new ArrayList<>();
-                paths.add(app.getPath());
-                bt.setPaths(paths);
-                bt.show(mFActivity.getSupportFragmentManager(), "no");
-                return false;
-            });
+            if (app instanceof TodayCard) {
+                TodayCard appt = (TodayCard) app;
+                holder.videoMarker.setVisibility(View.GONE);
+                Glide.with(holder.img)
+                        .load(appt.getPath())
+                        .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.AUTOMATIC))
+                        .into(holder.img);
+                holder.cardView.setOnClickListener(v -> {
+                    Intent intent = new Intent(mActivity, DetailsActivity.class);
+                    List<String> paths = new ArrayList<>();
+                    for (int i = 0; i < mList.size(); i++) {
+                        if (mList.get(i) instanceof  TodayCard)
+                            paths.add(mList.get(i).getPath());
+                    }
+                    intent.setAction(Intent.ACTION_SEND_MULTIPLE);
+                    intent.putStringArrayListExtra("paths", (ArrayList<String>) paths);
+                    intent.putExtra("pos", position);
+                    mActivity.startActivity(intent);
+                });
+                holder.cardView.setOnLongClickListener(v -> {
+                    DeleteSheet bt = new DeleteSheet();
+                    List<String> paths = new ArrayList<>();
+                    paths.add(appt.getPath());
+                    bt.setPaths(paths);
+                    bt.show(mActivity.getSupportFragmentManager(), "no");
+                    return false;
+                });
+            }
+            if (app instanceof VideoCard) {
+                VideoCard appv = (VideoCard) app;
+                holder.videoMarker.setVisibility(View.VISIBLE);
+                Glide.with(holder.img)
+                        .load(appv.getThumbnail())
+                        .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.AUTOMATIC))
+                        .into(holder.img);
+                holder.cardView.setOnClickListener(v -> {
+                    Intent intent = new Intent(mActivity, VideoActivity.class);
+                    intent.putExtra("video_path", appv.getPath());
+                    mActivity.startActivity(intent);
+                });
+                holder.cardView.setOnLongClickListener(v -> {
+                    DeleteSheet bt = new DeleteSheet();
+                    List<String> paths = new ArrayList<>();
+                    paths.add(appv.getPath());
+                    List<String> thumbs = new ArrayList<>();
+                    thumbs.add(appv.getThumbnail());
+                    bt.setThumbs(thumbs);
+                    bt.setPaths(paths);
+                    bt.show(mActivity.getSupportFragmentManager(), "no");
+                    return false;
+                });
+            }
+        } else {
+            if (app instanceof TodayCard) {
+                TodayCard appt = (TodayCard) app;
+                holder.videoMarker.setVisibility(View.GONE);
+                Glide.with(holder.img)
+                        .load(appt.getPath())
+                        .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.AUTOMATIC))
+                        .into(holder.img);
+                holder.cardView.setOnClickListener(v -> {
+                    Intent intent = new Intent(fActivity, DetailsActivity.class);
+                    List<String> paths = new ArrayList<>();
+                    for (int i = 0; i < mList.size(); i++) {
+                        if (mList.get(i) instanceof  TodayCard)
+                            paths.add(mList.get(i).getPath());
+                    }
+                    intent.setAction(Intent.ACTION_SEND_MULTIPLE);
+                    intent.putStringArrayListExtra("paths", (ArrayList<String>) paths);
+                    intent.putExtra("pos", position);
+                    fActivity.startActivity(intent);
+                });
+                holder.cardView.setOnLongClickListener(v -> {
+                    DeleteSheet bt = new DeleteSheet();
+                    List<String> paths = new ArrayList<>();
+                    paths.add(appt.getPath());
+                    bt.setPaths(paths);
+                    bt.show(fActivity.getSupportFragmentManager(), "no");
+                    return false;
+                });
+            }
+            if (app instanceof VideoCard) {
+                VideoCard appv = (VideoCard) app;
+                holder.videoMarker.setVisibility(View.VISIBLE);
+                Glide.with(holder.img)
+                        .load(appv.getThumbnail())
+                        .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.AUTOMATIC))
+                        .into(holder.img);
+                holder.cardView.setOnClickListener(v -> {
+                    Intent intent = new Intent(fActivity, VideoActivity.class);
+                    intent.putExtra("video_path", appv.getPath());
+                    fActivity.startActivity(intent);
+                });
+                holder.cardView.setOnLongClickListener(v -> {
+                    DeleteSheet bt = new DeleteSheet();
+                    List<String> paths = new ArrayList<>();
+                    paths.add(appv.getPath());
+                    List<String> thumbs = new ArrayList<>();
+                    thumbs.add(appv.getThumbnail());
+                    bt.setThumbs(thumbs);
+                    bt.setPaths(paths);
+                    bt.show(fActivity.getSupportFragmentManager(), "no");
+                    return false;
+                });
+            }
         }
     }
 
-    public void callBroadCast() {
-        MediaScannerConnection.scanFile(mActivity, new String[]{Environment.getExternalStorageDirectory().toString()}, null, (path, uri) -> {
-        });
-    }
 
     @Override
     public int getItemCount() {
@@ -111,16 +177,14 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
 
     class ViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
-        ImageView img;
-        TextView name;
+        ImageView img, videoMarker;
 
         ViewHolder(View view) {
             super(view);
             cardView = view.findViewById(R.id.img_card);
             img = view.findViewById(R.id.img);
-            name = view.findViewById(R.id.img_title);
+            videoMarker = view.findViewById(R.id.videoMarker);
         }
     }
-
 
 }

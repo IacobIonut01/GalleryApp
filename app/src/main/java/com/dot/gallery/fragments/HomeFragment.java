@@ -34,6 +34,7 @@ import com.dot.gallery.adapters.FavouriteAdapter;
 import com.dot.gallery.adapters.TodayAdapter;
 import com.dot.gallery.adapters.AlbumAdapter;
 import com.dot.gallery.model.FavouriteCard;
+import com.dot.gallery.model.MediaCard;
 import com.dot.gallery.model.TodayCard;
 import com.dot.gallery.model.AlbumCard;
 import com.dot.gallery.utils.GridSpacingItemDecoration;
@@ -55,7 +56,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class HomeFragment extends Fragment {
 
     private RecyclerView todayRecycler, allRecycler;
-    private List<TodayCard> todayList = new ArrayList<>();
+    private List<MediaCard> todayList = new ArrayList<>();
     private List<AlbumCard> allList = new ArrayList<>();
     private SwipeRefreshLayout swipeRefreshLayout;
     private RelativeLayout grant_sd;
@@ -63,15 +64,6 @@ public class HomeFragment extends Fragment {
     private SharedPreferences pref;
     private LinearLayout no_media;
     private TextView title_albums;
-
-    @Override
-    public void onResume() {
-        String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
-        if (!hasPermissions(PERMISSIONS)) {
-            ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, 1);
-        }
-        super.onResume();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -158,17 +150,6 @@ public class HomeFragment extends Fragment {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
     }
 
-    private boolean hasPermissions(String... permissions) {
-        if (getContext() != null && permissions != null) {
-            for (String permission : permissions) {
-                if (ActivityCompat.checkSelfPermission(getContext(), permission) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
     private String getAlbumPath(String fullPath) {
         String rtemp = fullPath;
         return rtemp.replace(rtemp.substring(rtemp.lastIndexOf("/")), "");
@@ -228,7 +209,7 @@ public class HomeFragment extends Fragment {
                 timestamp = cursor.getInt(column_index_timestamp);
                 File checkPath = new File(absolutePathOfImage);
                 if (currentStamp >= timestamp && timestamp >= yesterdayStamp && checkPath.exists())
-                    todayList.add(new TodayCard(absolutePathOfImage, name, album, String.valueOf(timestamp)));
+                    todayList.add(new TodayCard(absolutePathOfImage, album, String.valueOf(timestamp)));
             }
             todayList.sort((o1, o2) -> o2.getTimestamp().compareTo(o1.getTimestamp()));
             return xml;

@@ -27,11 +27,9 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class FavouriteFragment extends Fragment {
 
-    RecyclerView recyclerView;
-    List<FavouriteCard> favs = new ArrayList<>();
-    FavouriteAdapter adapter;
-    List<FavouriteCard> selectedList;
-    SwipeRefreshLayout swipeRefreshLayout;
+    private RecyclerView recyclerView;
+    private List<FavouriteCard> favs = new ArrayList<>();
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,11 +54,12 @@ public class FavouriteFragment extends Fragment {
         favs.add(new FavouriteCard(true));
         SharedPreferences prefs = getActivity().getSharedPreferences("favourite_images", MODE_PRIVATE);
         String httpParamJSONList = prefs.getString("favourite_images", "");
-        selectedList = new Gson().fromJson(httpParamJSONList, new TypeToken<List<FavouriteCard>>() {}.getType());
+        List<FavouriteCard> selectedList = new Gson().fromJson(httpParamJSONList, new TypeToken<List<FavouriteCard>>() {
+        }.getType());
         if (selectedList != null) {
             favs.addAll(selectedList);
         }
-        adapter = new FavouriteAdapter(getActivity(), favs);
+        FavouriteAdapter adapter = new FavouriteAdapter(getActivity(), favs);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         swipeRefreshLayout.setRefreshing(false);

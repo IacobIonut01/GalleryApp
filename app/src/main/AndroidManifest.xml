@@ -36,6 +36,9 @@
         <activity
             android:name=".activities.CameraActivity"
             android:theme="@style/CameraTheme"/>
+        <activity
+            android:name=".activities.VideoActivity"
+            android:theme="@style/VideoTheme"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

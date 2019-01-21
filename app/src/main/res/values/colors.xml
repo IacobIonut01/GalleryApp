@@ -5,6 +5,9 @@
     <color name="colorAccent">#4286f4</color>
     <color name="lightGrey">#fafafa</color>
 
+    <color name="shadeWhite">#efefef</color>
+    <color name="shadeDark">#4B4B4B</color>
+
     <color name="colorPrimaryD">#212121</color>
     <color name="colorPrimaryDDark">#212121</color>
 

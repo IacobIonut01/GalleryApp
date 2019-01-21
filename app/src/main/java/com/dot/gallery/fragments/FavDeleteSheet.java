@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dot.gallery.R;
-import com.dot.gallery.activities.MainActivity;
 import com.dot.gallery.model.FavouriteCard;
 import com.dot.gallery.utils.RoundedSheetFragment;
 import com.google.android.material.button.MaterialButton;
@@ -16,7 +15,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -25,9 +23,9 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class FavDeleteSheet extends RoundedSheetFragment {
 
-    List<FavouriteCard> paths = new ArrayList<>();
-    int pos;
-    MaterialButton delete;
+    private List<FavouriteCard> paths = new ArrayList<>();
+    private int pos;
+    private MaterialButton delete;
     private FragmentActivity mActivity;
     private SharedPreferences shared;
 

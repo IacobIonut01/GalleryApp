@@ -2,15 +2,16 @@ package com.dot.gallery.activities;
 
 import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -20,11 +21,10 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
 import com.dot.gallery.R;
 import com.dot.gallery.fragments.FavouriteFragment;
 import com.dot.gallery.fragments.HomeFragment;
-import com.dot.gallery.views.BottomSheetView;
+import com.dot.gallery.fragments.SearchFragment;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+        if (!hasPermissions(PERMISSIONS)) {
+            ActivityCompat.requestPermissions(this, PERMISSIONS, 1);
+        }
         SharedPreferences prefs = getSharedPreferences("app_theme_style", MODE_PRIVATE);
         switch (prefs.getInt("style", 0)) {
             case 0:
@@ -54,13 +58,15 @@ public class MainActivity extends AppCompatActivity {
                         return new HomeFragment();
                     case 1:
                         return new FavouriteFragment();
+                    case 2:
+                        return new SearchFragment();
                 }
                 return null;
             }
 
             @Override
             public int getCount() {
-                return 2;
+                return 3;
             }
         });
         AHBottomNavigation bottomNavigation = findViewById(R.id.bottomv);
@@ -96,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case 2:
                     viewPager.setCurrentItem(2);
+                    setTitle("Search");
                     break;
                 case 3:
                     bottomNavigation.setCurrentItem(0);
@@ -126,5 +133,16 @@ public class MainActivity extends AppCompatActivity {
         @ColorInt int colorAccent = ta.getColor(0, 0);
         ta.recycle();
         return colorAccent;
+    }
+
+    private boolean hasPermissions(String... permissions) {
+        if (permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

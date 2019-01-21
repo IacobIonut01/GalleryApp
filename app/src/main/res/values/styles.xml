@@ -7,6 +7,7 @@
         <item name="android:navigationBarColor">@color/colorPrimary</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="exposedBackgroundColor">@color/shadeWhite</item>
     </style>
 
     <style name="DarkTheme" parent="Theme.AppCompat.NoActionBar">
@@ -16,6 +17,7 @@
         <item name="android:navigationBarColor">@color/colorPrimaryD</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
         <item name="android:windowLightStatusBar">false</item>
+        <item name="exposedBackgroundColor">@color/shadeDark</item>
     </style>
 
     <style name="DetailsTheme" parent="AppTheme">
@@ -25,10 +27,17 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
+    <style name="VideoTheme" parent="AppTheme">
+        <item name="android:navigationBarColor">@android:color/black</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
 
     <style name="CameraTheme" parent="DetailsTheme">
         <item name="android:navigationBarColor">@android:color/black</item>
-        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
         <item name="android:windowFullscreen">true</item>
     </style>
 
@@ -63,6 +72,7 @@
         <item name="android:navigationBarColor">@android:color/white</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="exposedBackgroundColor">@color/shadeWhite</item>
     </style>
 
     <style name="BaseBottomSheetDialogD" parent="@style/Theme.Design.BottomSheetDialog">
@@ -75,6 +85,7 @@
         <item name="android:navigationBarColor">@color/colorPrimaryD</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="exposedBackgroundColor">@color/shadeDark</item>
     </style>
 
     <style name="ChipTextView" parent="TextAppearance.AppCompat.Body2">

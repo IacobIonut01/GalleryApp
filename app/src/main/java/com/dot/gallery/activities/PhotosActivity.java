@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.util.TypedValue;
 import android.widget.ImageButton;
@@ -19,10 +20,15 @@ import com.dot.gallery.model.MediaCard;
 import com.dot.gallery.model.TodayCard;
 import com.dot.gallery.model.VideoCard;
 import com.dot.gallery.utils.GridSpacingItemDecoration;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -36,7 +42,8 @@ public class PhotosActivity extends AppCompatActivity {
     String album_track;
     TextView album_name;
 
-    ImageButton go_back, refresh;
+    ImageButton go_back;
+    FloatingActionButton refresh;
 
     GridLayoutManager layoutManager;
 

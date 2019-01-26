@@ -1,15 +1,10 @@
 package com.dot.gallery.adapters;
 
 import android.content.Intent;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -21,9 +16,6 @@ import com.dot.gallery.fragments.DeleteSheet;
 import com.dot.gallery.model.MediaCard;
 import com.dot.gallery.model.TodayCard;
 import com.dot.gallery.model.VideoCard;
-import com.masterwok.simplevlcplayer.activities.MediaPlayerActivity;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 

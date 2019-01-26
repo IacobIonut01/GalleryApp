@@ -3,6 +3,7 @@ package com.dot.gallery.activities;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.camerakit.CameraKitView;
 import com.dot.gallery.R;
@@ -13,7 +14,10 @@ import androidx.appcompat.app.AppCompatActivity;
 public class CameraActivity extends AppCompatActivity {
 
     CameraKitView cameraKitView;
+    ImageButton capture;
     TabLayout mTabLayout;
+
+    private int captureType = 0;
 
     @Override
     public void onCreate(Bundle onSavedInstance) {
@@ -58,4 +62,7 @@ public class CameraActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         cameraKitView.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
+
+
 }

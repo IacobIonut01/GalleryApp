@@ -1,23 +1,19 @@
 package com.dot.gallery.views;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaScannerConnection;
 import android.os.Environment;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bogdwellers.pinchtozoom.ImageMatrixTouchHandler;
 import com.bumptech.glide.Glide;
 import com.dot.gallery.R;
 import com.dot.gallery.utils.MediaFileFunctions;
@@ -30,15 +26,15 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.FileProvider;
 import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
 public class DetailsSheetView extends LinearLayout {
 
-    Activity activity;
+    AppCompatActivity activity;
     View view;
     CoordinatorLayout root;
     LinearLayout sheet;
@@ -51,6 +47,7 @@ public class DetailsSheetView extends LinearLayout {
     ImageButton share, delete;
     TextView name;
     List<String> paths = new ArrayList<>();
+    int static_pos;
 
 
     public DetailsSheetView(Context context) {
@@ -86,44 +83,35 @@ public class DetailsSheetView extends LinearLayout {
 
             @Override
             public void onSlide(@NonNull View view, float offset) {
-                //CoordinatorLayout.LayoutParams card_params = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                //card_params.leftMargin = (int) (dp(32) * offset);
-                //card_params.rightMargin = (int) (dp(32) * offset);
                 frg_card.setTranslationY(-(sheet.getHeight() * offset));
-                //frg_card.setLayoutParams(card_params);
                 frg_card.setRadius(dp(12) * offset);
                 frg_card.setElevation(2 * offset);
             }
         });
         share.setOnClickListener(v -> shareImage(adapter.getPathAt(frg_view.getCurrentItem())));
         delete.setOnClickListener(v -> {
-            RoundedDialog dialog = new RoundedDialog(context, R.style.Theme_RoundedDialog);
-            View view = View.inflate(context, R.layout.delete_dialog, null);
-            dialog.setContentView(view);
-            TextView title = view.findViewById(R.id.title);
-            TextView text = view.findViewById(R.id.text);
-            Button positive = view.findViewById(R.id.dialog_postive);
-            Button negative = view.findViewById(R.id.dialog_negative);
-            text.setText(activity.getString(R.string.ask_confirm_delete_simple));
-            title.setText(activity.getString(R.string.confirm_delete));
-            positive.setVisibility(View.VISIBLE);
-            positive.setText(activity.getString(R.string.sub_yes));
-            positive.setOnClickListener(v2 -> {
+            DeleteSheet bt = new DeleteSheet();
+            List<String> paths = new ArrayList<>();
+            paths.add(adapter.getPathAt(frg_view.getCurrentItem()));
+            bt.setPaths(paths);
+            bt.show(activity.getSupportFragmentManager(), "no");
+            bt.setOnDeleteListener(v2 -> {
                 File file = new File(adapter.getPathAt(frg_view.getCurrentItem()));
                 if (file.exists()) {
                     if (MediaFileFunctions.deleteViaContentProvider(activity, adapter.getPathAt(frg_view.getCurrentItem()))) {
                         MediaScannerConnection.scanFile(activity, new String[]{Environment.getExternalStorageDirectory().toString()}, null, (path, uri) -> {
                         });
                         adapter.deletPathAt(frg_view.getCurrentItem());
-                        adapter.notifyDataSetChanged();
+                        frg_view.setAdapter(adapter);
                         frg_view.invalidate();
+                        frg_view.setCurrentItem(static_pos);
+                        if (adapter.getCount() < 1) {
+                            activity.finish();
+                        }
+                        bt.dismiss();
                     }
                 }
-                dialog.cancel();
             });
-            negative.setText(android.R.string.cancel);
-            negative.setOnClickListener(v3 -> dialog.cancel());
-            dialog.show();
         });
     }
 
@@ -140,6 +128,7 @@ public class DetailsSheetView extends LinearLayout {
     }
 
     public void setPosition(int pos) {
+        static_pos = pos;
         frg_view.setCurrentItem(pos);
     }
 
@@ -147,7 +136,7 @@ public class DetailsSheetView extends LinearLayout {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
     }
 
-    public void setContainerActivity(Activity activity) {
+    public void setContainerActivity(AppCompatActivity activity) {
         this.activity = activity;
     }
 
@@ -159,6 +148,7 @@ public class DetailsSheetView extends LinearLayout {
 
         void deletPathAt(int pos) {
             paths.remove(pos);
+            notifyDataSetChanged();
         }
 
         @Override
@@ -191,12 +181,4 @@ public class DetailsSheetView extends LinearLayout {
         }
     }
 
-    public boolean isFullScreen() {
-        int flg = activity.getWindow().getAttributes().flags;
-        boolean flag = false;
-        if ((flg & WindowManager.LayoutParams.FLAG_FULLSCREEN) == WindowManager.LayoutParams.FLAG_FULLSCREEN) {
-            flag = true;
-        }
-        return flag;
-    }
 }

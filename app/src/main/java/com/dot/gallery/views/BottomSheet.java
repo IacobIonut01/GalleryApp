@@ -1,4 +1,4 @@
-package com.dot.gallery.fragments;
+package com.dot.gallery.views;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +9,8 @@ import android.widget.RelativeLayout;
 
 import com.dot.gallery.R;
 import com.dot.gallery.activities.TrashActivity;
-import com.dot.gallery.utils.RoundedSheetFragment;
+import com.dot.gallery.fragments.FavouriteFragment;
+import com.dot.gallery.fragments.RoundedSheetFragment;
 
 import androidx.annotation.NonNull;
 

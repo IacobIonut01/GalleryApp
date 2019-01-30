@@ -12,10 +12,9 @@ import com.bumptech.glide.request.RequestOptions;
 import com.dot.gallery.R;
 import com.dot.gallery.activities.DetailsActivity;
 import com.dot.gallery.activities.VideoActivity;
-import com.dot.gallery.fragments.DeleteSheet;
+import com.dot.gallery.views.DeleteSheet;
 import com.dot.gallery.model.MediaCard;
-import com.dot.gallery.model.TodayCard;
-import com.dot.gallery.model.VideoCard;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +44,7 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.today_card, parent, false);
+                .inflate(R.layout.media_card, parent, false);
         return new ViewHolder(itemView);
     }
 
@@ -53,52 +52,57 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         MediaCard app = mList.get(position);
         if (mActivity != null) {
-            if (app instanceof TodayCard) {
-                TodayCard appt = (TodayCard) app;
+            if (!app.isVideo) {
                 holder.videoMarker.setVisibility(View.GONE);
                 Glide.with(holder.img)
-                        .load(appt.getPath())
+                        .load(app.getPath())
                         .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.AUTOMATIC))
                         .into(holder.img);
                 holder.cardView.setOnClickListener(v -> {
-                    Intent intent = new Intent(mActivity, DetailsActivity.class);
-                    List<String> paths = new ArrayList<>();
-                    for (int i = 0; i < mList.size(); i++) {
-                        if (mList.get(i) instanceof  TodayCard)
-                            paths.add(mList.get(i).getPath());
-                    }
-                    intent.setAction(Intent.ACTION_SEND_MULTIPLE);
-                    intent.putStringArrayListExtra("paths", (ArrayList<String>) paths);
-                    intent.putExtra("pos", position);
-                    mActivity.startActivity(intent);
+                    if (!app.isSelected()) {
+                        Intent intent = new Intent(mActivity, DetailsActivity.class);
+                        ArrayList<String> paths = new ArrayList<>();
+                        for (int i = 0; i < mList.size(); i++) {
+                                paths.add(mList.get(i).getPath());
+                        }
+                        intent.setAction(Intent.ACTION_SEND_MULTIPLE);
+                        intent.putStringArrayListExtra("paths", paths);
+                        intent.putExtra("pos", position);
+                        mActivity.startActivity(intent);
+                    } else
+                        app.setSelected(!app.isSelected());
                 });
                 holder.cardView.setOnLongClickListener(v -> {
+                    app.setSelected(true);
                     DeleteSheet bt = new DeleteSheet();
                     List<String> paths = new ArrayList<>();
-                    paths.add(appt.getPath());
+                    paths.add(app.getPath());
                     bt.setPaths(paths);
                     bt.show(mActivity.getSupportFragmentManager(), "no");
                     return false;
                 });
             }
-            if (app instanceof VideoCard) {
-                VideoCard appv = (VideoCard) app;
+            if (app.isVideo) {
                 holder.videoMarker.setVisibility(View.VISIBLE);
                 Glide.with(holder.img)
-                        .load(appv.getThumbnail())
+                        .load(app.getThumbnail())
                         .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.AUTOMATIC))
                         .into(holder.img);
                 holder.cardView.setOnClickListener(v -> {
-                    Intent intent = new Intent(mActivity, VideoActivity.class);
-                    intent.putExtra("video_path", appv.getPath());
-                    mActivity.startActivity(intent);
+                    if (!app.isSelected()) {
+                        Intent intent = new Intent(mActivity, VideoActivity.class);
+                        intent.putExtra("video_path", app.getPath());
+                        mActivity.startActivity(intent);
+                    } else
+                        app.setSelected(!app.isSelected());
                 });
                 holder.cardView.setOnLongClickListener(v -> {
+                    app.setSelected(true);
                     DeleteSheet bt = new DeleteSheet();
                     List<String> paths = new ArrayList<>();
-                    paths.add(appv.getPath());
+                    paths.add(app.getPath());
                     List<String> thumbs = new ArrayList<>();
-                    thumbs.add(appv.getThumbnail());
+                    thumbs.add(app.getThumbnail());
                     bt.setThumbs(thumbs);
                     bt.setPaths(paths);
                     bt.show(mActivity.getSupportFragmentManager(), "no");
@@ -106,52 +110,50 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
                 });
             }
         } else {
-            if (app instanceof TodayCard) {
-                TodayCard appt = (TodayCard) app;
+            if (!app.isVideo) {
                 holder.videoMarker.setVisibility(View.GONE);
                 Glide.with(holder.img)
-                        .load(appt.getPath())
+                        .load(app.getPath())
                         .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.AUTOMATIC))
                         .into(holder.img);
                 holder.cardView.setOnClickListener(v -> {
                     Intent intent = new Intent(fActivity, DetailsActivity.class);
-                    List<String> paths = new ArrayList<>();
+                    ArrayList<String> paths = new ArrayList<>();
                     for (int i = 0; i < mList.size(); i++) {
-                        if (mList.get(i) instanceof  TodayCard)
+                        if (!mList.get(i).isVideo)
                             paths.add(mList.get(i).getPath());
                     }
                     intent.setAction(Intent.ACTION_SEND_MULTIPLE);
-                    intent.putStringArrayListExtra("paths", (ArrayList<String>) paths);
+                    intent.putStringArrayListExtra("paths", paths);
                     intent.putExtra("pos", position);
                     fActivity.startActivity(intent);
                 });
                 holder.cardView.setOnLongClickListener(v -> {
                     DeleteSheet bt = new DeleteSheet();
                     List<String> paths = new ArrayList<>();
-                    paths.add(appt.getPath());
+                    paths.add(app.getPath());
                     bt.setPaths(paths);
                     bt.show(fActivity.getSupportFragmentManager(), "no");
                     return false;
                 });
             }
-            if (app instanceof VideoCard) {
-                VideoCard appv = (VideoCard) app;
+            if (app.isVideo) {
                 holder.videoMarker.setVisibility(View.VISIBLE);
                 Glide.with(holder.img)
-                        .load(appv.getThumbnail())
+                        .load(app.getThumbnail())
                         .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.AUTOMATIC))
                         .into(holder.img);
                 holder.cardView.setOnClickListener(v -> {
                     Intent intent = new Intent(fActivity, VideoActivity.class);
-                    intent.putExtra("video_path", appv.getPath());
+                    intent.putExtra("video_path", app.getPath());
                     fActivity.startActivity(intent);
                 });
                 holder.cardView.setOnLongClickListener(v -> {
                     DeleteSheet bt = new DeleteSheet();
                     List<String> paths = new ArrayList<>();
-                    paths.add(appv.getPath());
+                    paths.add(app.getPath());
                     List<String> thumbs = new ArrayList<>();
-                    thumbs.add(appv.getThumbnail());
+                    thumbs.add(app.getThumbnail());
                     bt.setThumbs(thumbs);
                     bt.setPaths(paths);
                     bt.show(fActivity.getSupportFragmentManager(), "no");

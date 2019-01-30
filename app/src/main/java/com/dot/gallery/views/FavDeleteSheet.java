@@ -1,4 +1,4 @@
-package com.dot.gallery.fragments;
+package com.dot.gallery.views;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,8 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dot.gallery.R;
+import com.dot.gallery.fragments.FavouriteFragment;
+import com.dot.gallery.fragments.RoundedSheetFragment;
 import com.dot.gallery.model.FavouriteCard;
-import com.dot.gallery.utils.RoundedSheetFragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

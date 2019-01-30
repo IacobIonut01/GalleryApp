@@ -18,6 +18,11 @@ public class FavouriteCard {
         this.isFirst = isFirst;
     }
 
+    public FavouriteCard(String finalAbsolutePathOfImage, String finalTimestamp) {
+        this.path = finalAbsolutePathOfImage;
+        this.timestamp = finalTimestamp;
+    }
+
     public boolean isSelected() {
         return isSelected;
     }

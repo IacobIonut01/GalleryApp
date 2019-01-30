@@ -17,16 +17,13 @@ import android.widget.TextView;
 import com.dot.gallery.R;
 import com.dot.gallery.adapters.TodayAdapter;
 import com.dot.gallery.model.MediaCard;
-import com.dot.gallery.model.TodayCard;
-import com.dot.gallery.model.VideoCard;
 import com.dot.gallery.utils.GridSpacingItemDecoration;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -46,6 +43,12 @@ public class PhotosActivity extends AppCompatActivity {
     FloatingActionButton refresh;
 
     GridLayoutManager layoutManager;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new parseMedia().execute();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,14 +72,13 @@ public class PhotosActivity extends AppCompatActivity {
         layoutManager = new GridLayoutManager(getApplicationContext(), 3);
         recycler.addItemDecoration(new GridSpacingItemDecoration(layoutManager.getSpanCount(), dp(6), true));
         refresh = findViewById(R.id.refresh);
-        new LoadAllAlbums().execute();
         go_back.setOnClickListener(v -> finish());
         refresh.setOnClickListener(v -> {
-            new LoadAllAlbums().execute();
+            new parseMedia().execute();
         });
     }
 
-    class LoadAllAlbums extends AsyncTask<String, Void, String> {
+    class parseMedia extends AsyncTask<String, Void, String> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -90,7 +92,7 @@ public class PhotosActivity extends AppCompatActivity {
             int column_index_data, vcolumn_index_data, column_index_album, column_index_timestamp, vcolumn_index_timestamp, vcolumn_index_thumbnail;
             String absolutePathOfImage, album, thumb, vpath;
             int timestamp, vtimestamp;
-            final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
+            final String orderBy = MediaStore.Images.Media.DATE_MODIFIED;
 
             String[] projection = {
                     MediaStore.MediaColumns.DATA,
@@ -99,7 +101,7 @@ public class PhotosActivity extends AppCompatActivity {
                     MediaStore.MediaColumns.DATE_MODIFIED};
             String[] vprojection = {
                     MediaStore.MediaColumns.DATA,
-                    MediaStore.MediaColumns.DATE_MODIFIED,
+                    MediaStore.Video.Media.DATE_MODIFIED,
                     MediaStore.Video.Media.TITLE,
                     MediaStore.Video.Media.BUCKET_DISPLAY_NAME,
                     MediaStore.Video.Thumbnails.DATA};
@@ -114,37 +116,39 @@ public class PhotosActivity extends AppCompatActivity {
             Cursor cursorInternal = getContentResolver().query(uriInternal, projection, "bucket_display_name = \""+album_track+"\"",
                     null, orderBy + " DESC");
             Cursor cursorVExternal = getContentResolver().query(vuriExternal, vprojection, "bucket_display_name = \""+album_track+"\"",
-                    null, orderBy + " DESC");
+                    null, MediaStore.Video.Media.DATE_MODIFIED + " DESC");
             Cursor cursorVInternal = getContentResolver().query(vuriInternal, vprojection, "bucket_display_name = \""+album_track+"\"",
-                    null, orderBy + " DESC");
+                    null, MediaStore.Video.Media.DATE_MODIFIED + " DESC");
             cursor = new MergeCursor(new Cursor[]{cursorExternal,cursorInternal});
             Cursor vcursor = new MergeCursor(new Cursor[]{cursorVExternal,cursorVInternal});
 
             column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
             column_index_album = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
             column_index_timestamp = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATE_MODIFIED);
-            vcolumn_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-            vcolumn_index_timestamp = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATE_MODIFIED);
-            vcolumn_index_thumbnail = cursor.getColumnIndexOrThrow(MediaStore.Video.Thumbnails.DATA);
+            vcolumn_index_data = vcursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+            vcolumn_index_timestamp = vcursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_MODIFIED);
+            vcolumn_index_thumbnail = vcursor.getColumnIndexOrThrow(MediaStore.Video.Thumbnails.DATA);
             while (cursor.moveToNext() || vcursor.moveToNext()) {
-                absolutePathOfImage = cursor.getString(column_index_data);
-                album = cursor.getString(column_index_album);
-                timestamp = cursor.getInt(column_index_timestamp);
-                File checkPath = new File(absolutePathOfImage);
-                if (checkPath.exists()) {
-                    allList.add(new TodayCard(absolutePathOfImage, album, String.valueOf(timestamp)));
+                if (cursor.getColumnCount() > 0) {
+                    absolutePathOfImage = cursor.getString(column_index_data);
+                    album = cursor.getString(column_index_album);
+                    timestamp = cursor.getInt(column_index_timestamp);
+                    File checkPath = new File(absolutePathOfImage);
+                    if (checkPath.exists()) {
+                        allList.add(new MediaCard(absolutePathOfImage, album, String.valueOf(timestamp)));
+                    }
                 }
-                if (vcursor.moveToNext()) {
+                if (vcursor.moveToNext() && vcursor.getColumnCount() > 0) {
                     vpath = vcursor.getString(vcolumn_index_data);
                     thumb = vcursor.getString(vcolumn_index_thumbnail);
                     vtimestamp = vcursor.getInt(vcolumn_index_timestamp);
                     File vcheckPath = new File(vpath);
                     if (vcheckPath.exists()) {
-                        allList.add(new VideoCard(vpath, String.valueOf(vtimestamp), thumb));
+                        allList.add(new MediaCard(vpath, String.valueOf(vtimestamp), thumb, true));
                     }
                 }
             }
-            allList.sort((o1, o2) -> o2.getTimestamp().compareTo(o1.getTimestamp()));
+            allList.sort((o1, o2) -> timeFormat(o2.getTimestamp()).compareTo(timeFormat(o1.getTimestamp())));
             return xml;
         }
 
@@ -153,10 +157,19 @@ public class PhotosActivity extends AppCompatActivity {
             adapter = new TodayAdapter(PhotosActivity.this, allList);
             recycler.setAdapter(adapter);
             recycler.setLayoutManager(layoutManager);
+            if (allList.size() < 1) {
+                finish();
+            }
         }
     }
 
     private int dp(int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+    }
+
+    private Date timeFormat(String timestamp) {
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        cal.setTimeInMillis(Integer.valueOf(timestamp) * 1000L);
+        return cal.getTime();
     }
 }

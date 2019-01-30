@@ -1,4 +1,4 @@
-package com.dot.gallery.fragments;
+package com.dot.gallery.views;
 
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -7,19 +7,23 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.dot.gallery.R;
 import com.dot.gallery.adapters.PickerAdapter;
+import com.dot.gallery.fragments.FavouriteFragment;
+import com.dot.gallery.fragments.RoundedSheetFragment;
 import com.dot.gallery.model.FavouriteCard;
 import com.dot.gallery.model.PickerCard;
 import com.dot.gallery.utils.GridSpacingItemDecoration;
-import com.dot.gallery.utils.RoundedSheetFragment;
+import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -55,15 +59,13 @@ public class PickerSheet extends RoundedSheetFragment {
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(3, dp(6), false));
         prg = view.findViewById(R.id.loader);
         shared = getActivity().getSharedPreferences("favourite_images", MODE_PRIVATE);
-        new LoadTodayList().execute();
-
+        new parseMedia().execute();
         picker = view.findViewById(R.id.pick);
         picker.setEnabled(false);
         picker.setOnClickListener(v -> {
             updateList();
             dismiss();
         });
-
         return view;
     }
 
@@ -71,7 +73,7 @@ public class PickerSheet extends RoundedSheetFragment {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
     }
 
-    private class LoadTodayList extends AsyncTask<String, Void, String> {
+    private class parseMedia extends AsyncTask<String, Void, String> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -110,16 +112,17 @@ public class PickerSheet extends RoundedSheetFragment {
                 timestamp = cursor.getInt(column_index_timestamp);
                 File checkPath = new File(absolutePathOfImage);
                 if (checkPath.exists()) {
-                    String finalAbsolutePathOfImage = absolutePathOfImage;
-                    int finalTimestamp = timestamp;
-                    phts.add(new PickerCard(absolutePathOfImage, name, album, String.valueOf(timestamp), v -> {
-                        FavouriteCard c = new FavouriteCard();
-                        c.setPath(finalAbsolutePathOfImage);
-                        c.setTimestamp(String.valueOf(finalTimestamp));
-                        selected.add(c);
-                        if (selected.size() == 1)
-                            picker.setEnabled(true);
-                    }));
+                    PickerCard pick = new PickerCard();
+                    pick.setSelected(false);
+                    pick.setPath(absolutePathOfImage);
+                    pick.setAlbum(album);
+                    pick.setName(name);
+                    pick.setTimestamp(String.valueOf(timestamp));
+                    pick.setBtn((MaterialButton) picker);
+                    pick.setSelected(selected);
+                    pick.setRemotePath(absolutePathOfImage);
+                    pick.setRemoteTimestamp(String.valueOf(timestamp));
+                    phts.add(pick);
                 }
             }
             phts.sort((o1, o2) -> o2.getTimestamp().compareTo(o1.getTimestamp()));

@@ -6,7 +6,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.dot.gallery.R;
-import com.dot.gallery.fragments.SelectThemeSheet;
+import com.dot.gallery.views.SelectThemeSheet;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;

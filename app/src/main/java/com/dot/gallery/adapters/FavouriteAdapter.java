@@ -14,11 +14,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.dot.gallery.R;
 import com.dot.gallery.activities.DetailsActivity;
-import com.dot.gallery.fragments.FavDeleteSheet;
-import com.dot.gallery.fragments.PickerSheet;
+import com.dot.gallery.views.FavDeleteSheet;
+import com.dot.gallery.views.PickerSheet;
 import com.dot.gallery.model.FavouriteCard;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 

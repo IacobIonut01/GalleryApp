@@ -17,7 +17,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.provider.MediaStore;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,17 +29,15 @@ import com.dot.gallery.R;
 import com.dot.gallery.adapters.TodayAdapter;
 import com.dot.gallery.adapters.AlbumAdapter;
 import com.dot.gallery.model.MediaCard;
-import com.dot.gallery.model.TodayCard;
 import com.dot.gallery.model.AlbumCard;
-import com.dot.gallery.model.VideoCard;
 import com.dot.gallery.utils.GridSpacingItemDecoration;
-import com.dot.gallery.utils.MediaParser;
 import com.dot.gallery.utils.VerticalSpaceItemDecoration;
 import com.google.android.material.card.MaterialCardView;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
@@ -86,21 +83,23 @@ public class HomeFragment extends Fragment {
         todayRecycler.addItemDecoration(new VerticalSpaceItemDecoration(dp(12)));
         swipeRefreshLayout = view.findViewById(R.id.swipeToRefresh);
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            //loadImages();
             new LoadTodayList().execute();
             new LoadAllAlbums().execute();
         });
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_green_dark,
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark);
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         swipeRefreshLayout.post(() -> {
             swipeRefreshLayout.setRefreshing(true);
-            //loadImages();
             new LoadTodayList().execute();
             new LoadAllAlbums().execute();
         });
-        loadSearchEngine(view);
-        return view;
     }
 
     /*public void loadImages() {
@@ -122,10 +121,6 @@ public class HomeFragment extends Fragment {
             favRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         }
     }*/
-
-    public void loadSearchEngine(View view) {
-
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -158,10 +153,6 @@ public class HomeFragment extends Fragment {
 
     private int dp(int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
-    }
-
-    private String getAlbumPath(String fullPath) {
-        return fullPath.replace(fullPath.substring(fullPath.lastIndexOf("/")), "");
     }
 
     private String getCount(String album_name) {
@@ -212,7 +203,7 @@ public class HomeFragment extends Fragment {
                     MediaStore.MediaColumns.DATE_MODIFIED};
             String[] vprojection = {
                     MediaStore.MediaColumns.DATA,
-                    MediaStore.MediaColumns.DATE_MODIFIED,
+                    MediaStore.Video.Media.DATE_MODIFIED,
                     MediaStore.Video.Media.TITLE,
                     MediaStore.Video.Media.BUCKET_DISPLAY_NAME,
                     MediaStore.Video.Thumbnails.DATA};
@@ -236,16 +227,18 @@ public class HomeFragment extends Fragment {
             column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
             column_index_album = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
             column_index_timestamp = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATE_MODIFIED);
-            vcolumn_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-            vcolumn_index_timestamp = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATE_MODIFIED);
-            vcolumn_index_thumbnail = cursor.getColumnIndexOrThrow(MediaStore.Video.Thumbnails.DATA);
+            vcolumn_index_data = vcursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+            vcolumn_index_timestamp = vcursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_MODIFIED);
+            vcolumn_index_thumbnail = vcursor.getColumnIndexOrThrow(MediaStore.Video.Thumbnails.DATA);
             while (cursor.moveToNext() || vcursor.moveToNext()) {
-                absolutePathOfImage = cursor.getString(column_index_data);
-                album = cursor.getString(column_index_album);
-                timestamp = cursor.getInt(column_index_timestamp);
-                File checkPath = new File(absolutePathOfImage);
-                if (currentStamp >= timestamp && timestamp >= yesterdayStamp && checkPath.exists()) {
-                    todayList.add(new TodayCard(absolutePathOfImage, album, String.valueOf(timestamp)));
+                if (cursor.moveToNext()) {
+                    absolutePathOfImage = cursor.getString(column_index_data);
+                    album = cursor.getString(column_index_album);
+                    timestamp = cursor.getInt(column_index_timestamp);
+                    File checkPath = new File(absolutePathOfImage);
+                    if (currentStamp >= timestamp && timestamp >= yesterdayStamp && checkPath.exists()) {
+                        todayList.add(new MediaCard(absolutePathOfImage, album, String.valueOf(timestamp)));
+                    }
                 }
                 if (vcursor.moveToNext()) {
                     vpath = vcursor.getString(vcolumn_index_data);
@@ -253,11 +246,11 @@ public class HomeFragment extends Fragment {
                     vtimestamp = vcursor.getInt(vcolumn_index_timestamp);
                     File vcheckPath = new File(vpath);
                     if (currentStamp >= vtimestamp && vtimestamp >= yesterdayStamp && vcheckPath.exists()) {
-                        todayList.add(new VideoCard(vpath, String.valueOf(vtimestamp), thumb));
+                        todayList.add(new MediaCard(vpath, String.valueOf(vtimestamp), thumb, true));
                     }
                 }
             }
-            todayList.sort((o1, o2) -> o2.getTimestamp().compareTo(o1.getTimestamp()));
+            todayList.sort((o1, o2) -> timeFormat(o2.getTimestamp()).compareTo(timeFormat(o1.getTimestamp())));
             return xml;
         }
 
@@ -269,8 +262,10 @@ public class HomeFragment extends Fragment {
             TextView tx = getView().findViewById(R.id.title_recents);
             if (todayList.size() == 0)
                 tx.setVisibility(View.GONE);
-            else
+            else {
                 tx.setVisibility(View.VISIBLE);
+                tx.setText(timeFormat(Integer.parseInt(todayList.get(0).getTimestamp())));
+            }
         }
     }
 
@@ -296,14 +291,26 @@ public class HomeFragment extends Fragment {
                     MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
                     MediaStore.MediaColumns.DATE_MODIFIED};
 
+            String[] vprojection = {
+                    MediaStore.Video.Media.DATE_MODIFIED,
+                    MediaStore.Video.Media.TITLE,
+                    MediaStore.Video.Media.BUCKET_DISPLAY_NAME,
+                    MediaStore.Video.Thumbnails.DATA};
+
             Uri uriExternal = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
             Uri uriInternal = MediaStore.Images.Media.INTERNAL_CONTENT_URI;
+            Uri vuriExternal = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+            Uri vuriInternal = MediaStore.Video.Media.INTERNAL_CONTENT_URI;
 
             Cursor cursorExternal = getActivity().getContentResolver().query(uriExternal, projection, "_data IS NOT NULL) GROUP BY (bucket_display_name",
                     null, orderBy + " DESC");
             Cursor cursorInternal = getActivity().getContentResolver().query(uriInternal, projection, "_data IS NOT NULL) GROUP BY (bucket_display_name",
                     null, orderBy + " DESC");
-            cursor = new MergeCursor(new Cursor[]{cursorExternal, cursorInternal});
+            Cursor cursorVExternal = getActivity().getContentResolver().query(vuriExternal, vprojection, "_data IS NOT NULL) GROUP BY (bucket_display_name",
+                    null, orderBy + " DESC");
+            Cursor cursorVInternal = getActivity().getContentResolver().query(vuriInternal, vprojection, "_data IS NOT NULL) GROUP BY (bucket_display_name",
+                    null, orderBy + " DESC");
+            cursor = new MergeCursor(new Cursor[]{cursorExternal, cursorInternal, cursorVExternal, cursorVInternal});
 
             column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
             column_index_album = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
@@ -316,7 +323,7 @@ public class HomeFragment extends Fragment {
                 if (checkPath.exists())
                     allList.add(new AlbumCard(absolutePathOfImage, album, getCount(album), String.valueOf(timestamp)));
             }
-            allList.sort((o1, o2) -> o2.getTimestamp().compareTo(o1.getTimestamp()));
+            allList.sort((o1, o2) -> timeFormat(o2.getTimestamp()).compareTo(timeFormat(o1.getTimestamp())));
             LinkedHashSet<AlbumCard> listToSet = new LinkedHashSet<>(allList);
             allList.clear();
             allList.addAll(listToSet);
@@ -338,6 +345,19 @@ public class HomeFragment extends Fragment {
                 no_media.setVisibility(View.GONE);
             }
         }
+    }
+
+
+    private String timeFormat(int timestamp) {
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        cal.setTimeInMillis(timestamp * 1000L);
+        return DateFormat.format("E, MMM d", cal).toString();
+    }
+
+    private Date timeFormat(String timestamp) {
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        cal.setTimeInMillis(Integer.valueOf(timestamp) * 1000L);
+        return cal.getTime();
     }
 
 }

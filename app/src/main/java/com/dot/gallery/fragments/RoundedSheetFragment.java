@@ -1,4 +1,4 @@
-package com.dot.gallery.utils;
+package com.dot.gallery.fragments;
 
 import android.app.Dialog;
 import android.content.SharedPreferences;
